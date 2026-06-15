@@ -54,3 +54,9 @@ cd "C:\Users\noswi\Desktop\Scripts\Find-UnresolvedTrayIcons"
 ## Safety
 
 This script is read-only and does not modify the registry.
+
+## Support and contribution
+
+- Issues and feature requests: [GitHub Issues](https://github.com/Ci303/Find-UnresolvedTrayIcons/issues)
+- Security reporting: [SECURITY.md](./SECURITY.md)
+- Contributing guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
