@@ -1,29 +1,34 @@
 # Find-UnresolvedTrayIcons.ps1
 
-PowerShell utility that scans Windows notification-area metadata and lists tray icon entries that point to missing executables.
+![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-5391FE?logo=powershell)
+![Last Commit](https://img.shields.io/github/last-commit/Ci303/Find-UnresolvedTrayIcons?label=last%20commit)
+![License](https://img.shields.io/github/license/Ci303/Find-UnresolvedTrayIcons)
 
-## Overview
+## Purpose
 
-The script reads all child items under:
+`Find-UnresolvedTrayIcons.ps1` scans user tray icon metadata and reports unresolved executable paths so you can identify stale notification-area entries without changing the registry.
 
-- `HKCU:\Control Panel\NotifyIconSettings`
+## How it works
 
-For each entry it:
-
-- Reads the stored `ExecutablePath`
+- Reads child entries under `HKCU:\Control Panel\NotifyIconSettings`
 - Expands environment variables
-- Replaces common Windows known-folder GUID prefixes with concrete paths
-- Extracts the executable path from command-line style values
-- Excludes packaged app entries that reference `\WindowsApps\`
-- Returns entries where the resolved path is on disk but does not exist
+- Resolves common Windows known-folder GUID prefixes
+- Extracts executable paths from command-line style values
+- Ignores entries under `\WindowsApps\`
+- Lists entries where the resolved path has a drive-letter path but does not exist
 
 ## Output
 
-The script emits a formatted table with:
+The script outputs a table with:
 
-- `Key` – registry child name
-- `ResolvedPath` – resolved executable path used for the check
-- `RawPath` – original value from the registry
+- `Key` — registry child name
+- `ResolvedPath` — resolved candidate executable path
+- `RawPath` — original `ExecutablePath` value
+
+## Requirements
+
+- Windows PowerShell 5.1+ or PowerShell 7+
+- Registry read access to `HKCU`
 
 ## Usage
 
@@ -32,17 +37,19 @@ cd "C:\Users\noswi\Desktop\Scripts\Find-UnresolvedTrayIcons"
 .\Find-UnresolvedTrayIcons.ps1
 ```
 
-## Notes
+## Example
 
-- Read-only script. It does not modify the registry.
-- Use this report as input for `Invoke-TrayIconCleanup.ps1` before removing anything.
-- Designed for user-level tray settings (`HKCU`), not machine-wide tray entries.
+```powershell
+# Quickly inspect unresolved tray references
+.\Find-UnresolvedTrayIcons.ps1
+```
 
-## Requirements
+## Troubleshooting
 
-- Windows PowerShell 5.1+ or PowerShell 7+
-- Read access to your current user hive (`HKCU`) in the Registry
+- **No output:** either there are no unresolved entries or values are not in the expected format.
+- **Unexpected paths:** command-line values with non-standard quoting are normalised heuristically; check `RawPath` before acting.
+- **False negatives:** some entries may remain unlisted if they point to non-drive paths or are inaccessible.
 
 ## Safety
 
-No destructive operations are performed by this script. You can inspect the output and decide whether to clean the entries manually.
+This script is read-only and does not modify the registry.
