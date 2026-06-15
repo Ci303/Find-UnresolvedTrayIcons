@@ -7,15 +7,15 @@
 
 ## Purpose
 
-Report unresolved Windows tray-icon executable references in the current user registry so stale notification-area entries can be identified safely.
+Report unresolved Windows tray-icon executable references in the current user registry so stale notification-area entries can be identified safely before any cleanup.
 
 ## What it does
 
 - Reads tray entry data under `HKCU:\Control Panel\NotifyIconSettings`.
-- Resolves environment variables and common known-folder GUID prefixes.
+- Resolves environment variables and known-folder GUID prefixes.
 - Extracts executable paths from command-line style registry values.
-- Filters out known packaged app paths under `\\WindowsApps\\`.
-- Outputs unresolved entries where the target executable path is missing.
+- Filters out packaged app paths under `\WindowsApps\`.
+- Returns only unresolved entries where the target executable path is missing.
 
 ## Requirements
 
@@ -31,25 +31,17 @@ cd "C:\Users\noswi\Desktop\Scripts\Find-UnresolvedTrayIcons"
 
 ## Output
 
-A table is written to the console containing:
-
-- `Key` – registry item name
-- `ResolvedPath` – interpreted executable path
-- `RawPath` – original registry value
-
-## Example
-
-```powershell
-.\Find-UnresolvedTrayIcons.ps1
-```
+- `Key` – registry item name.
+- `ResolvedPath` – interpreted executable path.
+- `RawPath` – original registry value.
 
 ## Troubleshooting
 
 - No rows returned: there are no unresolved entries matching current heuristics.
-- A path looks incorrect: check `RawPath` and verify whether it is expected by the relevant application.
-- Some tray entries are intentionally not detected if they do not resolve to drive-letter paths.
+- A path looks incorrect: check `RawPath` and confirm expected app behaviour.
+- Some entries are not listed when they do not resolve to drive-letter paths.
 
-## Notes
+## Safety
 
 This script is read-only and does not write to the registry.
 
