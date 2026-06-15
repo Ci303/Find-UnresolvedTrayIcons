@@ -3,6 +3,7 @@
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-5391FE?logo=powershell)
 ![Last Commit](https://img.shields.io/github/last-commit/Ci303/Find-UnresolvedTrayIcons?label=last%20commit)
 ![License](https://img.shields.io/github/license/Ci303/Find-UnresolvedTrayIcons)
+![Issues](https://img.shields.io/github/issues/Ci303/Find-UnresolvedTrayIcons?label=open%20issues)
 
 ## Purpose
 
