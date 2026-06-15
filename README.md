@@ -7,29 +7,20 @@
 
 ## Purpose
 
-`Find-UnresolvedTrayIcons.ps1` scans user tray icon metadata and reports unresolved executable paths so you can identify stale notification-area entries without changing the registry.
+Report unresolved Windows tray-icon executable references in the current user registry so stale notification-area entries can be identified safely.
 
-## How it works
+## What it does
 
-- Reads child entries under `HKCU:\Control Panel\NotifyIconSettings`
-- Expands environment variables
-- Resolves common Windows known-folder GUID prefixes
-- Extracts executable paths from command-line style values
-- Ignores entries under `\WindowsApps\`
-- Lists entries where the resolved path has a drive-letter path but does not exist
-
-## Output
-
-The script outputs a table with:
-
-- `Key` — registry child name
-- `ResolvedPath` — resolved candidate executable path
-- `RawPath` — original `ExecutablePath` value
+- Reads tray entry data under `HKCU:\Control Panel\NotifyIconSettings`.
+- Resolves environment variables and common known-folder GUID prefixes.
+- Extracts executable paths from command-line style registry values.
+- Filters out known packaged app paths under `\\WindowsApps\\`.
+- Outputs unresolved entries where the target executable path is missing.
 
 ## Requirements
 
-- Windows PowerShell 5.1+ or PowerShell 7+
-- Registry read access to `HKCU`
+- Windows PowerShell 5.1+ or PowerShell 7+.
+- Access to the current user registry hive (`HKCU`).
 
 ## Usage
 
@@ -38,25 +29,32 @@ cd "C:\Users\noswi\Desktop\Scripts\Find-UnresolvedTrayIcons"
 .\Find-UnresolvedTrayIcons.ps1
 ```
 
+## Output
+
+A table is written to the console containing:
+
+- `Key` – registry item name
+- `ResolvedPath` – interpreted executable path
+- `RawPath` – original registry value
+
 ## Example
 
 ```powershell
-# Quickly inspect unresolved tray references
 .\Find-UnresolvedTrayIcons.ps1
 ```
 
 ## Troubleshooting
 
-- **No output:** either there are no unresolved entries or values are not in the expected format.
-- **Unexpected paths:** command-line values with non-standard quoting are normalised heuristically; check `RawPath` before acting.
-- **False negatives:** some entries may remain unlisted if they point to non-drive paths or are inaccessible.
+- No rows returned: there are no unresolved entries matching current heuristics.
+- A path looks incorrect: check `RawPath` and verify whether it is expected by the relevant application.
+- Some tray entries are intentionally not detected if they do not resolve to drive-letter paths.
 
-## Safety
+## Notes
 
-This script is read-only and does not modify the registry.
+This script is read-only and does not write to the registry.
 
 ## Support and contribution
 
 - Issues and feature requests: [GitHub Issues](https://github.com/Ci303/Find-UnresolvedTrayIcons/issues)
-- Security reporting: [SECURITY.md](./SECURITY.md)
-- Contributing guide: [CONTRIBUTING.md](./CONTRIBUTING.md)
+- Security concerns: [SECURITY.md](./SECURITY.md)
+- Contribution guidelines: [CONTRIBUTING.md](./CONTRIBUTING.md)
