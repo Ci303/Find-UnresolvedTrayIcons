@@ -50,3 +50,8 @@ This script is read-only and does not write to the registry.
 - Issues and feature requests: [GitHub Issues](https://github.com/Ci303/Find-UnresolvedTrayIcons/issues)
 - Security concerns: [SECURITY.md](./SECURITY.md)
 - Contribution guidelines: [CONTRIBUTING.md](./CONTRIBUTING.md)
+## Repository policy
+
+- Submit changes via a pull request from a feature branch to `master`.
+- Do not edit files directly on the default branch in normal workflow.
+- This keeps review, traceability and rollback procedures explicit.
